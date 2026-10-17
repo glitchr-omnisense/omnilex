@@ -1,9 +1,14 @@
-# glitchr/omnilex
+# omniscient/omnilex
 
 One contract for the sources of law - texts, codes, case law: searched with filters
 (jurisdiction, date, subject, type), read **in the version in force at a given date**, their
 links followed between decisions and texts, and what is new since a date listed for a legal
 watch.
+
+Published as `omniscient/omnilex` (formerly `glitchr/omnilex`, which this package replaces: a
+`composer.json` that still requires the old name keeps resolving to this package and never installs
+both). `omniscient/` is the vendor of every family's core, the providers keep `omnilex/`, the
+namespace `Omnilex\` and the GitHub repositories do not change.
 
 ```php
 $article = $legifrance->article('LEGITEXT000006070987', 'L36-11', new DateTimeImmutable('2018-01-01'));
@@ -67,8 +72,8 @@ put a name back on a person; an application built on it must not either.
 ## Scope
 
 Omnilex reads **sources of law**. Legal scholarship (articles, theses) is read with
-[`glitchr/omnischolar`](https://github.com/glitchr-studio/omnischolar) (`omnischolar/hal` on the
-domain `shs.droit`); public registers (companies, VAT numbers) with `glitchr/omnistate`.
+[`omniscient/omnischolar`](https://github.com/glitchr-studio/omnischolar) (`omnischolar/hal` on
+the domain `shs.droit`); public registers (companies, VAT numbers) with `omniscient/omnistate`.
 
 ## Documentation
 
@@ -84,7 +89,7 @@ domain `shs.droit`); public registers (companies, VAT numbers) with `glitchr/omn
 ## Plain PHP
 
 ```sh
-composer require glitchr/omnilex omnilex/eurlex omnilex/justice-administrative
+composer require omniscient/omnilex omnilex/eurlex omnilex/justice-administrative
 ```
 
 ```php
@@ -139,7 +144,7 @@ docker compose run --rm omnilex test
 
 ## Responsibility
 
-`glitchr/omnilex` and its `omnilex/*` providers are independent, unofficial clients: none is
+`omniscient/omnilex` and its `omnilex/*` providers are independent, unofficial clients: none is
 affiliated with, endorsed by or sponsored by the services it reaches. Each service keeps its own
 terms (re-use conditions and licence of their data, attribution, accounts and keys, quotas,
 pseudonymisation), named with a link in the "Responsibility" section of the README of each provider

@@ -2,7 +2,7 @@
 
 Omnilex runs without a framework ([installation](installation.md)); in a Symfony application its
 bundle does the wiring. Its components - `symfony/config`, `symfony/dependency-injection`,
-`symfony/http-kernel`, and a cache pool for the tokens - are not required by `glitchr/omnilex`:
+`symfony/http-kernel`, and a cache pool for the tokens - are not required by `omniscient/omnilex`:
 the application has them, and nothing of them is loaded outside Symfony.
 
 Register `Omnilex\Bridge\Symfony\OmnilexBundle` (no Flex recipe):

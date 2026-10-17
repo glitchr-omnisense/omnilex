@@ -1,7 +1,7 @@
 # Installation and first calls
 
 ```sh
-composer require glitchr/omnilex omnilex/eurlex omnilex/justice-administrative
+composer require omniscient/omnilex omnilex/eurlex omnilex/justice-administrative
 composer require omnilex/legifrance omnilex/judilibre    # with a PISTE account
 ```
 
