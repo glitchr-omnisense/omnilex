@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Every source package: its slug (omnilex/<slug>, github.com/glitchr-studio/omnilex-<slug>),
+ * Every source package: its slug (omnilex/<slug>, github.com/glitchr-omnisense/omnilex-<slug>),
  * its tests' namespace and its factory class.
  */
 return [

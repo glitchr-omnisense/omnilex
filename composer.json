@@ -1,5 +1,5 @@
 {
-    "name": "omniscient/omnilex",
+    "name": "omnisense/omnilex",
     "type": "library",
     "description": "Omnilex: one contract for the sources of law - texts, codes and case law, searched with filters (jurisdiction, date, subject, type), read in the version in force at a date, their links followed, what is new listed - from Légifrance, Judilibre, EUR-Lex and the French administrative courts' open data; identifiers (ECLI, NOR, CELEX, pourvoi, Légifrance) normalised and validated; and its Symfony bundle.",
     "keywords": [
@@ -34,6 +34,7 @@
         "symfony/http-kernel": "^6.4|^7.0|^8.0"
     },
     "replace": {
+        "omniscient/omnilex": "self.version",
         "glitchr/omnilex": "self.version"
     },
     "suggest": {

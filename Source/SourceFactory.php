@@ -50,7 +50,7 @@ abstract class SourceFactory implements SourceFactoryInterface
     /** The User-Agent a source sends: the one configured, else "omnilex/1.x". */
     protected static function userAgent(Config $c): string
     {
-        return $c->get('user_agent') ?? 'omnilex/1.x (+https://github.com/glitchr-studio/omnilex)';
+        return $c->get('user_agent') ?? 'omnilex/1.x (+https://github.com/glitchr-omnisense/omnilex)';
     }
 
     /** The factory's name, its required options, the defaults of the others. */

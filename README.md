@@ -1,13 +1,13 @@
-# omniscient/omnilex
+# omnisense/omnilex
 
 One contract for the sources of law - texts, codes, case law: searched with filters
 (jurisdiction, date, subject, type), read **in the version in force at a given date**, their
 links followed between decisions and texts, and what is new since a date listed for a legal
 watch.
 
-Published as `omniscient/omnilex` (formerly `glitchr/omnilex`, which this package replaces: a
+Published as `omnisense/omnilex` (formerly `glitchr/omnilex`, which this package replaces: a
 `composer.json` that still requires the old name keeps resolving to this package and never installs
-both). `omniscient/` is the vendor of every family's core, the providers keep `omnilex/`, the
+both). `omnisense/` is the vendor of every family's core, the providers keep `omnilex/`, the
 namespace `Omnilex\` and the GitHub repositories do not change.
 
 ```php
@@ -34,10 +34,10 @@ it requires nothing but `symfony/http-client-contracts`, each source package
 
 | Package | Source | Access |
 |---|---|---|
-| [`omnilex/legifrance`](https://github.com/glitchr-studio/omnilex-legifrance) | Légifrance: codes, laws, decrees, the Journal officiel, as in force at a date; case law | PISTE account (free), OAuth client credentials |
-| [`omnilex/judilibre`](https://github.com/glitchr-studio/omnilex-judilibre) | Judilibre: the decisions of the Cour de cassation and of the judicial courts, pseudonymised | PISTE account (free), OAuth client credentials or API key |
-| [`omnilex/eurlex`](https://github.com/glitchr-studio/omnilex-eurlex) | EUR-Lex: EU acts in their consolidated versions, the case law of the Court of Justice, their links | none (the Publications Office's open endpoint) |
-| [`omnilex/justice-administrative`](https://github.com/glitchr-studio/omnilex-justice-administrative) | The Conseil d'État, the administrative courts of appeal and tribunals: decisions, pseudonymised | none |
+| [`omnilex/legifrance`](https://github.com/glitchr-omnisense/omnilex-legifrance) | Légifrance: codes, laws, decrees, the Journal officiel, as in force at a date; case law | PISTE account (free), OAuth client credentials |
+| [`omnilex/judilibre`](https://github.com/glitchr-omnisense/omnilex-judilibre) | Judilibre: the decisions of the Cour de cassation and of the judicial courts, pseudonymised | PISTE account (free), OAuth client credentials or API key |
+| [`omnilex/eurlex`](https://github.com/glitchr-omnisense/omnilex-eurlex) | EUR-Lex: EU acts in their consolidated versions, the case law of the Court of Justice, their links | none (the Publications Office's open endpoint) |
+| [`omnilex/justice-administrative`](https://github.com/glitchr-omnisense/omnilex-justice-administrative) | The Conseil d'État, the administrative courts of appeal and tribunals: decisions, pseudonymised | none |
 
 ## Capability interfaces
 
@@ -72,8 +72,8 @@ put a name back on a person; an application built on it must not either.
 ## Scope
 
 Omnilex reads **sources of law**. Legal scholarship (articles, theses) is read with
-[`omniscient/omnischolar`](https://github.com/glitchr-studio/omnischolar) (`omnischolar/hal` on
-the domain `shs.droit`); public registers (companies, VAT numbers) with `omniscient/omnistate`.
+[`omnisense/omnischolar`](https://github.com/glitchr-omnisense/omnischolar) (`omnischolar/hal` on
+the domain `shs.droit`); public registers (companies, VAT numbers) with `omnisense/omnistate`.
 
 ## Documentation
 
@@ -89,7 +89,7 @@ the domain `shs.droit`); public registers (companies, VAT numbers) with `omnisci
 ## Plain PHP
 
 ```sh
-composer require omniscient/omnilex omnilex/eurlex omnilex/justice-administrative
+composer require omnisense/omnilex omnilex/eurlex omnilex/justice-administrative
 ```
 
 ```php
@@ -144,7 +144,7 @@ docker compose run --rm omnilex test
 
 ## Responsibility
 
-`omniscient/omnilex` and its `omnilex/*` providers are independent, unofficial clients: none is
+`omnisense/omnilex` and its `omnilex/*` providers are independent, unofficial clients: none is
 affiliated with, endorsed by or sponsored by the services it reaches. Each service keeps its own
 terms (re-use conditions and licence of their data, attribution, accounts and keys, quotas,
 pseudonymisation), named with a link in the "Responsibility" section of the README of each provider

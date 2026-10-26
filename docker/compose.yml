@@ -1,4 +1,4 @@
-# omniscient/omnilex with every source package, against the real services:
+# omnisense/omnilex with every source package, against the real services:
 #
 #   cp .env.dist .env                                         # the PISTE credentials, when you have them
 #   docker compose run --rm omnilex sources                   # which sources are installed and configured, what each does
@@ -21,7 +21,7 @@ name: omnilex-harness
 services:
   omnilex:
     build: .
-    image: omniscient/omnilex-harness
+    image: omnisense/omnilex-harness
     env_file:
       - path: .env
         required: false
