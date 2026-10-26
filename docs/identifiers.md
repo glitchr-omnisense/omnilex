@@ -1,3 +1,8 @@
+---
+title: Identifiers
+order: 25
+---
+
 # Identifiers
 
 `Omnilex\Model\Identifier` normalises an identifier so that two spellings of it compare equal,
@@ -29,6 +34,28 @@ Identifier::celex('2016/679');                                                  
 | `NOR` | 4 letters, 7 digits, 1 letter | upper case |
 | `POURVOI` | `17-18.194`, also `1718194`, `17 18 194`, with `n°` or its key letter | `17-18.194` |
 | `LEGITEXT`, `LEGIARTI`, `LEGISCTA`, `JORFTEXT`, `JORFARTI`, `JORFCONT`, `JURITEXT`, `CETATEXT`, `CONSTEXT` | the prefix and 12 digits | upper case |
+
+Every case of `Omnilex\Model\Scheme` (string-backed, the value is the lower-case name), with
+`label()` and what `kind()` tells:
+
+| Case | Value | `label()` | `kind()` | |
+|---|---|---|---|---|
+| `ECLI` | `ecli` | `ECLI` | `DECISION` | European Case Law Identifier: `ECLI:FR:CCASS:2018:C301117`, `ECLI:EU:C:2014:317` |
+| `CELEX` | `celex` | `CELEX number` | - | a document of EU law: `32016R0679`; consolidated: `02016R0679-20160504` |
+| `ELI` | `eli` | `ELI` | - | European Legislation Identifier |
+| `NOR` | `nor` | `NOR` | `TEXT` | the French official number of a text of the Journal officiel |
+| `POURVOI` | `pourvoi` | `numéro de pourvoi` | `DECISION` | an appeal number at the Cour de cassation |
+| `LEGITEXT` | `legitext` | `LEGITEXT identifier` | `TEXT` | Légifrance: a consolidated text (a code, a law, a decree) |
+| `LEGIARTI` | `legiarti` | `LEGIARTI identifier` | `ARTICLE` | one version of an article of a consolidated text |
+| `LEGISCTA` | `legiscta` | `LEGISCTA identifier` | - | a section of a consolidated text |
+| `JORFTEXT` | `jorftext` | `JORFTEXT identifier` | `TEXT` | a text as published in the Journal officiel |
+| `JORFARTI` | `jorfarti` | `JORFARTI identifier` | `ARTICLE` | an article as published in the Journal officiel |
+| `JORFCONT` | `jorfcont` | `JORFCONT identifier` | - | one issue of the Journal officiel |
+| `JURITEXT` | `juritext` | `JURITEXT identifier` | `DECISION` | a decision of the judicial courts |
+| `CETATEXT` | `cetatext` | `CETATEXT identifier` | `DECISION` | a decision of the administrative courts |
+| `CONSTEXT` | `constext` | `CONSTEXT identifier` | `DECISION` | a decision of the Conseil constitutionnel |
+
+`isLegifrance()` is true for the nine Légifrance prefixes.
 
 `parse()` reads `scheme:value`, a page of Légifrance, EUR-Lex or the Publications Office, an ELI,
 or a value whose shape tells its scheme. A bare seven-digit number is not read as a pourvoi (it
@@ -66,3 +93,35 @@ $decision->identifiers->has(Scheme::ECLI);
 $decision->identifiers->toArray();                // ['ecli' => [...], 'pourvoi' => [...]] for storage
 Identifiers::fromArray($stored);
 ```
+
+## Identifier, method by method
+
+| Method | |
+|---|---|
+| `Identifier::of(Scheme\|string $scheme, string $value): Identifier` | normalised; `InvalidArgumentException` (`"x" is not a valid CELEX number.`) when the value is not of that scheme, PHP's `ValueError` for an unknown scheme name |
+| `Identifier::tryOf(Scheme\|string\|null $scheme, ?string $value): ?Identifier` | the same, `null` instead of an exception (and for an unknown scheme or an empty value) |
+| `Identifier::parse(string $input): ?Identifier` | from any string, `null` when nothing is recognised |
+| `ecli()`, `celex()`, `eli()`, `nor()`, `pourvoi()` | `of()` with that scheme |
+| `Identifier::legifrance(string $value)` | one of Légifrance's, its scheme read from its prefix |
+| `$scheme`, `$value` | public, read-only |
+| `key(): string` | `scheme:value`, what collections key on; also `__toString()` |
+| `equals(Identifier $other): bool` | same scheme and value |
+| `country(): ?string` | `FR` or `EU`: an ECLI's country, an ELI's by its host, `EU` for a CELEX number, `FR` otherwise |
+| `court(): ?string` | an ECLI's court code |
+| `year(): ?int` | an ECLI's or a CELEX number's year |
+| `sector(): ?string` | a CELEX number's sector |
+| `consolidatedOn(): ?DateTimeImmutable` | a consolidated CELEX number's date |
+| `url(): ?string` | the page, when the identifier alone tells it |
+
+`Identifiers` (iterable, countable, each identifier once in the order learnt; `null`s given to it
+are skipped):
+
+| Method | |
+|---|---|
+| `new Identifiers(iterable)`, `Identifiers::of(?Identifier ...)` | |
+| `get(Scheme): ?Identifier`, `value(Scheme): ?string` | the first of that scheme |
+| `all(?Scheme = null): list<Identifier>`, `values(Scheme): list<string>` | |
+| `has(Scheme\|Identifier): bool` | |
+| `with(?Identifier ...): Identifiers`, `merge(Identifiers): Identifiers` | new collections |
+| `keys(): list<string>` | `scheme:value` each |
+| `toArray(): array<string, list<string>>`, `Identifiers::fromArray(array)` | for storage; `fromArray()` skips what no longer parses |

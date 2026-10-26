@@ -77,14 +77,20 @@ the domain `shs.droit`); public registers (companies, VAT numbers) with `omnisen
 
 ## Documentation
 
+- [The manual's home: providers, when to use it](docs/index.md)
 - [Installation and first calls](docs/installation.md)
-- [Sources: what each can and cannot do](docs/sources.md)
-- [Models](docs/models.md)
+- [Symfony](docs/symfony.md) and [Laravel](docs/laravel.md)
+- [Concepts and models](docs/models.md)
 - [Identifiers: ECLI, CELEX, ELI, NOR, pourvoi, Légifrance](docs/identifiers.md)
+- [Sources and search: what each can and cannot do](docs/sources.md)
 - [The law at a date: versions](docs/versions.md)
 - [Authentication: PISTE and OAuth client credentials](docs/authentication.md)
-- [Symfony](docs/symfony.md)
+- [Configuration reference](docs/configuration.md)
+- [Errors](docs/errors.md)
+- [Testing](docs/testing.md)
 - [The Docker harness](docs/harness.md)
+- [Writing a provider](docs/providers.md)
+- [Verified and not](docs/verified.md)
 
 ## Plain PHP
 

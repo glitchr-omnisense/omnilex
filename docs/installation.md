@@ -1,16 +1,29 @@
-# Installation and first calls
+---
+title: Installation
+order: 10
+---
+
+# Installation
 
 ```sh
 composer require omnisense/omnilex omnilex/eurlex omnilex/justice-administrative
 composer require omnilex/legifrance omnilex/judilibre    # with a PISTE account
 ```
 
-PHP 8.2 or later.
+## Requirements
 
-Omnilex needs no framework. The core requires nothing but `symfony/http-client-contracts`, each
-source package `symfony/http-client`: two libraries that stand alone. It runs the same in plain
-PHP, in a worker, in Laravel or Slim, and in Symfony, where a bundle does the wiring
-([Symfony](symfony.md)).
+- PHP 8.2 or later.
+- `omnisense/omnilex` requires `symfony/http-client-contracts` (^3.0) and nothing else: no
+  framework, no HTTP client of its own. It replaces `omniscient/omnilex`: a `composer.json` that
+  still requires the old name resolves to this package.
+- Each provider requires `omnisense/omnilex` and `symfony/http-client` (6.4, 7 or 8). Its factory
+  takes an `HttpClientInterface` (the application's, a `MockHttpClient` in a test) and makes its
+  own when given none (`HttpClient::create()` with a timeout of 60 seconds; 30 for Judilibre).
+- The Symfony bundle needs `symfony/config`, `symfony/dependency-injection`,
+  `symfony/http-kernel`, and `psr/cache` with a pool (`symfony/cache`) to keep the PISTE tokens;
+  none is required by the package ([Symfony](symfony.md)).
+
+It runs the same in plain PHP, in a worker, in Laravel or Slim, and in Symfony.
 
 ## Plain PHP
 
@@ -47,7 +60,8 @@ version 02016R0679-20160504, from 2016-05-04, in_force
 1. La personne concernée a le droit d'obtenir du responsable du traitement l'effacement, dans les meilleurs délais, de données à caractère personnel la concernant et le responsable du traitement a l'obligation d'effacer ces données à caractère personnel dans les meilleurs délais, lorsque l'un des motifs suivants s'applique:
 ```
 
-(as answered on 2026-10-05)
+(run on 2026-10-26 with the harness's image and the workspace's packages, against the Publications
+Office's live endpoint; the same answer as on 2026-10-05)
 
 No key, no account: the script asks the Publications Office's open endpoint. That is all there is
 to it:
@@ -148,16 +162,10 @@ document (EUR-Lex).
 
 ## Errors
 
-| Exception | When |
-|---|---|
-| `NotSupportedException` | the source does not do that, cannot read that identifier, cannot apply that criterion |
-| `AuthenticationException` | the credentials are refused: wrong client id or secret, API not subscribed, terms not accepted |
-| `RateLimitedException` | 429: slow down (`$retryAfter` seconds, when the service says) |
-| `UnavailableException` | 5xx, 423, a timeout, a network error (the two above extend it): never "nothing" |
-| `ProviderException` | any other error answer (a malformed query: 400) |
-| `InvalidConfigException` | a source not configured, a factory not installed, an option missing |
-
-All implement `Omnilex\Exception\OmnilexException`. Not found is `null` or an empty page.
+Not found is `null` or an empty page; everything else is an exception implementing
+`Omnilex\Exception\OmnilexException`. A service that is down, refuses the credentials or asks to
+slow down is an `UnavailableException` (or one of its children), never "nothing": see
+[Errors](errors.md).
 
 ## Rate limits
 

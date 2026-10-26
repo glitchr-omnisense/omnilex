@@ -1,3 +1,8 @@
+---
+title: The law at a date
+order: 32
+---
+
 # The law at a date: versions
 
 A text changes; a dispute is judged on the law as it stood at the time. `text()` and

@@ -1,3 +1,8 @@
+---
+title: Authentication: PISTE
+order: 34
+---
+
 # Authentication: PISTE and OAuth client credentials
 
 The Légifrance and Judilibre APIs are behind [PISTE](https://piste.gouv.fr), the French State's

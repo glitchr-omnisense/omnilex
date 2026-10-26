@@ -1,4 +1,9 @@
-# Sources
+---
+title: Sources and search
+order: 30
+---
+
+# Sources and search
 
 Every source implements `Omnilex\Source\SourceInterface` - `getName()`, `capabilities()` - and
 the capability interfaces of what its service does:
@@ -32,7 +37,7 @@ it typed, or throws `NotSupportedException`.
 | Version at a date | yes: every version of an article; a text as consolidated that day | - | yes: consolidated versions | - |
 | Pseudonymised | not said by the API | yes | not said | yes |
 | Per page, at most | 100 | 50 (10 000 results) | 100 | 200, no paging |
-| Verified against the real service | no (no credentials) | no (no credentials) | yes | yes |
+| Called live | no (no credentials) | no (no credentials) | yes (2026-10-04, 2026-10-26) | yes (2026-10-04, 2026-10-26) |
 
 ## The search criteria
 
@@ -68,28 +73,39 @@ documentation where its codes come from (Judilibre: `JudilibreSource::taxonomy()
   archives to download); no paging, no subject filter, no links to texts; ECLIs for the Conseil
   d'État only.
 
-## Writing a source
+## Choosing a source at run time
 
 ```php
-final class HudocSource extends HttpSource implements SearchInterface, DecisionReaderInterface
-{
-    public function getName(): string { return 'hudoc'; }
+use Omnilex\Model\Identifier;
+use Omnilex\Model\Kind;
+use Omnilex\Model\Scheme;
 
-    public function capabilities(): Capabilities
-    {
-        return new Capabilities(kinds: [Kind::DECISION], identifiers: [Scheme::ECLI], criteria: ['text', 'from', 'to'], jurisdictions: ['COE']);
-    }
+$registry->having('decision');              // the usable sources that read decisions, by name
+$registry->reading(Scheme::ECLI);           // those whose Capabilities read an ECLI
+$registry->reading(Kind::TEXT);             // those that hold texts
 
-    public function search(Query $query): Results
-    {
-        $this->accept($query);                       // refuses the criteria not listed above
-        $data = $this->getJson('search', [...]);     // errors mapped: 404 null, 429, 5xx, transport
-        // ...
-    }
+$id = Identifier::parse($input);            // what the user pasted: an ECLI, a CELEX, a Légifrance address
+foreach ($registry->reading($id->scheme) as $name => $source) {
+    // ask $source for it
 }
 ```
 
-`HttpSource` gives `getJson()`, `postJson()`, `get()`, the throttle, the signing of calls when a
-`TokenProviderInterface` is passed, `identify()` to read an identifier from a string, `plain()` to
-turn HTML into text and `day()` to read the services' dates. A `SourceFactory` declares its name,
-its required options and their defaults.
+`having()`, `reading()` and `usable()` build the sources and leave out those whose options are
+incomplete (`InvalidConfigException`); `get()` and `all()` throw it.
+
+> [!WARNING]
+> Known defect: a source refused for another reason - EUR-Lex's `language` that is not an official
+> language of the Union, Judilibre's or the administrative courts' `recent` other than their two
+> values - is a PHP `InvalidArgumentException`, not an `InvalidConfigException`: `usable()`,
+> `having()` and `reading()` throw it instead of leaving the source out (seen with
+> `language: xx` on 2026-10-26).
+
+> [!WARNING]
+> Known defect: EUR-Lex searches `title` when a query sets both `title` and `text`, and drops
+> `text` without a word, where a criterion the source cannot apply is expected to be refused (seen
+> on 2026-10-26: text "pêche", title "protection des données": the request held the title's words
+> only). Set one or the other.
+
+## Writing a source
+
+A source of another service: [Writing a provider](providers.md).

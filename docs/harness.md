@@ -1,3 +1,8 @@
+---
+title: The Docker harness
+order: 70
+---
+
 # The Docker harness
 
 `docker/` runs this package with every `omnilex/*` source installed - from GitHub (branch 1.x),
