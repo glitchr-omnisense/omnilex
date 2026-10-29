@@ -89,3 +89,11 @@ that meets one tries again later rather than record "nothing new".
 - `ValueError`: `Identifier::of()` with a scheme name that is not a `Scheme`.
 - `TypeError`: in Symfony, a source injected under an interface it does not implement
   ([Symfony](symfony.md#services)).
+
+## No secret in a failure
+
+A source keeps its credentials out of what it throws: a key in the query, the bearer of its token,
+the client secret sent for the token (`ClientCredentials`) are masked in the HTTP client's message
+(`Http\Redaction::text()`), the previous exception is a copy of the client's (`Redaction::copy()`:
+the same class and code), and no trace of the chain keeps its arguments, where the query, headers
+and body stood (`zend.exception_ignore_args` off).

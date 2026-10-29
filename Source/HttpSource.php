@@ -8,6 +8,7 @@ use Omnilex\Exception\NotSupportedException;
 use Omnilex\Exception\ProviderException;
 use Omnilex\Exception\RateLimitedException;
 use Omnilex\Exception\UnavailableException;
+use Omnilex\Http\Redaction;
 use Omnilex\Model\Identifier;
 use Omnilex\Model\Query;
 use Omnilex\Model\Scheme;
@@ -123,24 +124,29 @@ abstract class HttpSource implements SourceInterface
 
                     return $this->call($method, $path, $query, $json, $headers, true);
                 }
-                throw new AuthenticationException($this->getName(), \sprintf('the service refuses the credentials (%d)%s', $status, self::excerpt($challenge ?? $response->getContent(false))), $status);
+                throw Redaction::withoutArguments(new AuthenticationException($this->getName(), \sprintf('the service refuses the credentials (%d)%s', $status, self::excerpt($challenge ?? $response->getContent(false))), $status));
             }
             if (429 === $status) {
                 $retry = $response->getHeaders(false)['retry-after'][0] ?? null;
-                throw new RateLimitedException($this->getName(), null !== $retry && is_numeric($retry) ? (int) $retry : null);
+                throw Redaction::withoutArguments(new RateLimitedException($this->getName(), null !== $retry && is_numeric($retry) ? (int) $retry : null));
             }
             if ($status >= 500 || 423 === $status) {
-                throw new UnavailableException($this->getName(), \sprintf('the service answered %d%s', $status, self::excerpt($response->getContent(false))), $status);
+                throw Redaction::withoutArguments(new UnavailableException($this->getName(), \sprintf('the service answered %d%s', $status, self::excerpt($response->getContent(false))), $status));
             }
             if ($status >= 400) {
-                throw new ProviderException($this->getName(), \sprintf('the service answered %d%s', $status, self::excerpt($response->getContent(false))), $status);
+                throw Redaction::withoutArguments(new ProviderException($this->getName(), \sprintf('the service answered %d%s', $status, self::excerpt($response->getContent(false))), $status));
             }
 
             return $response->getContent();
         } catch (TransportExceptionInterface $e) {
-            throw new UnavailableException($this->getName(), 'unreachable: '.$e->getMessage(), null, $e);
+            // The key or the token (the query, the headers) masked in the message and the previous, a copy; no trace keeps the arguments.
+            $secrets = Redaction::secrets($url, $options);
+
+            throw Redaction::withoutArguments(new UnavailableException($this->getName(), 'unreachable: '.Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         } catch (ExceptionInterface $e) {
-            throw new ProviderException($this->getName(), $e->getMessage(), null, $e);
+            $secrets = Redaction::secrets($url, $options);
+
+            throw Redaction::withoutArguments(new ProviderException($this->getName(), Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         }
     }
 

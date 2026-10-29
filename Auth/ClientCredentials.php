@@ -4,6 +4,7 @@ namespace Omnilex\Auth;
 
 use Omnilex\Exception\AuthenticationException;
 use Omnilex\Exception\UnavailableException;
+use Omnilex\Http\Redaction;
 use Omnilex\Model\Token;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -54,7 +55,10 @@ final class ClientCredentials implements TokenProviderInterface
             $status = $response->getStatusCode();
             $body = $response->getContent(false);
         } catch (ExceptionInterface $e) {
-            throw new UnavailableException($this->source, 'the authorisation server is unreachable: '.$e->getMessage(), null, $e);
+            // The client secret, in the body, kept out: the previous a copy of the client's exception, no trace keeping the options.
+            $secrets = Redaction::secrets($this->tokenUri, ['body' => ['client_secret' => $this->clientSecret]]);
+
+            throw Redaction::withoutArguments(new UnavailableException($this->source, 'the authorisation server is unreachable: '.Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         }
         if ($status >= 500) {
             throw new UnavailableException($this->source, \sprintf('the authorisation server answered %d', $status), $status);
