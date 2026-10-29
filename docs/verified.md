@@ -36,10 +36,10 @@ from their checkouts), PHP 8.4, PHPUnit 11.5.57, no network: 143 tests, 747 asse
   request bodies and the reading of the answers follow the published descriptions; each
   provider's manual lists what is unchecked.
 - The Laravel service provider of [Laravel](laravel.md): written from the contract.
-- The known defects found while writing this manual: EUR-Lex dropping `text` when `title` is set,
-  configuration errors raised as `InvalidArgumentException` and breaking `usable()`
-  ([Sources and search](sources.md#choosing-a-source-at-run-time)), boolean options read with
-  `(bool)` ([Configuration](configuration.md#options-every-source-takes)).
+- The known defects found while writing this manual, each fixed since with its test: EUR-Lex
+  dropping `text` when `title` is set, configuration errors raised as `InvalidArgumentException`
+  and breaking `usable()` ([Sources and search](sources.md#choosing-a-source-at-run-time)),
+  boolean options read with `(bool)` ([Configuration](configuration.md#options-every-source-takes)).
 
 ## Responsibility
 

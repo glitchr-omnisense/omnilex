@@ -37,4 +37,16 @@ final class Config extends \ArrayObject
     {
         return $this->offsetExists($key) && null !== $this[$key] && '' !== $this[$key] ? $this[$key] : $default;
     }
+
+    /**
+     * A boolean option: an environment variable arrives as a string, so
+     * "1", "true", "yes" and "on" are true, anything else ("false", "0",
+     * "no", empty, unset) false - where PHP's (bool) "false" is true.
+     */
+    public function bool(string $key): bool
+    {
+        $value = $this->get($key);
+
+        return \is_bool($value) ? $value : \in_array(strtolower(trim((string) $value)), ['1', 'true', 'yes', 'on'], true);
+    }
 }

@@ -11,7 +11,7 @@ exception implementing `Omnilex\Exception\OmnilexException` (an interface extend
 
 | Exception | Extends | Thrown when |
 |---|---|---|
-| `InvalidConfigException` | `\LogicException` | a source not configured, a factory not installed, a required option missing or empty (Légifrance's credentials, Judilibre's credentials or key) |
+| `InvalidConfigException` | `\InvalidArgumentException` (a `\LogicException`) | a source not configured, a factory not installed, a required option missing or empty (Légifrance's credentials, Judilibre's credentials or key), an option a source refuses (EUR-Lex's `language`, Judilibre's and the administrative courts' `recent`) |
 | `NotSupportedException` | `\LogicException` | the source does not do that: an operation it has no interface for (the registry's getters), an identifier it cannot read, a search criterion it cannot apply, an article asked without its number where one is needed |
 | `ProviderException` | `\RuntimeException` | the service answered with an error: any 4xx but those below, an answer that is not JSON or not what was expected, a route that no longer answers (the administrative courts' engine) |
 | `UnavailableException` | `ProviderException` | the service could not be reached, is down, or refuses for now: 5xx, 423, a transport error or a timeout; the authorisation server unreachable or answering 5xx |

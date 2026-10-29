@@ -64,11 +64,9 @@ new LegifranceSourceFactory(?HttpClientInterface $http = null, ?TokenStoreInterf
 Without a client, each factory makes its own (`HttpClient::create()` with `timeout` 60 seconds; 30
 for Judilibre). The store is read by the PISTE sources only ([Authentication](authentication.md)).
 
-> [!WARNING]
-> Known defect: the boolean options (`sandbox`, `content`, `resolve_references`) are read with
-> PHP's `(bool)`: the strings `'false'` and `'no'` are true (seen: `sandbox: 'false'` builds a
-> source on PISTE's sandbox), where an option given by an environment variable is expected to read
-> `"false"` as false. Give a real boolean (`%env(bool:...)%` in Symfony).
+The boolean options (`sandbox`, `content`, `resolve_references`) are read by `Config::bool()`:
+`true`, `"1"`, `"true"`, `"yes"` and `"on"` are true, anything else (`"false"`, `"0"`, `"no"`, empty)
+false, so an option given by an environment variable as a string reads as it says.
 
 ## legifrance
 
@@ -89,7 +87,7 @@ for Judilibre). The store is read by the PISTE sources only ([Authentication](au
 | `client_id`, `client_secret` | string | `null` | these two, or `key_id` | OAuth client credentials through PISTE |
 | `key_id` | string | `null` | | the PISTE application's API key, sent as the `KeyId` header; when set, the OAuth pair is not used |
 | `sandbox` | bool | `false` | no | `https://sandbox-api.piste.gouv.fr/cassation/judilibre/v1.0` and the sandbox's token server |
-| `recent` | `update` or `creation` | `update` | no | the date `recent()` reads: created or updated in the base, or created; another value is an `InvalidArgumentException` |
+| `recent` | `update` or `creation` | `update` | no | the date `recent()` reads: created or updated in the base, or created; another value is an `InvalidConfigException` |
 | `resolve_references` | bool | `false` | no | `resolve_references=true` on every call: labels in place of keys in the answers (`Court::$code` is then `null`) |
 | `throttle` | float | `0.5` | no | |
 | `base_uri` | string | `https://api.piste.gouv.fr/cassation/judilibre/v1.0` (or the sandbox's) | no | |
@@ -103,7 +101,7 @@ client_id and client_secret, or key_id.`).
 
 | Option | Type | Default | Required | |
 |---|---|---|---|---|
-| `language` | ISO 639-1 | `fr` | no | the titles', labels' and texts' language: one of the 24 official languages of the Union (`bg`, `cs`, `da`, `de`, `el`, `en`, `es`, `et`, `fi`, `fr`, `ga`, `hr`, `hu`, `it`, `lt`, `lv`, `mt`, `nl`, `pl`, `pt`, `ro`, `sk`, `sl`, `sv`); another is an `InvalidArgumentException` |
+| `language` | ISO 639-1 | `fr` | no | the titles', labels' and texts' language: one of the 24 official languages of the Union (`bg`, `cs`, `da`, `de`, `el`, `en`, `es`, `et`, `fi`, `fr`, `ga`, `hr`, `hu`, `it`, `lt`, `lv`, `mt`, `nl`, `pl`, `pt`, `ro`, `sk`, `sl`, `sv`); another is an `InvalidConfigException` |
 | `content` | bool | `true` | no | whether `text()` and `decision()` also fetch the document itself (one more call, up to a few megabytes); `article()` always does |
 | `throttle` | float | `0.5` | no | |
 | `base_uri` | string | `https://publications.europa.eu/webapi/rdf/sparql` | no | the SPARQL endpoint |
@@ -114,7 +112,7 @@ client_id and client_secret, or key_id.`).
 
 | Option | Type | Default | Required | |
 |---|---|---|---|---|
-| `recent` | `lastModified` or `Date_Lecture` | `lastModified` | no | the date `recent()` reads: added to the base, or read in open court; another value is an `InvalidArgumentException` |
+| `recent` | `lastModified` or `Date_Lecture` | `lastModified` | no | the date `recent()` reads: added to the base, or read in open court; another value is an `InvalidConfigException` |
 | `throttle` | float | `1.0` | no | |
 | `base_uri` | string | `https://opendata.justice-administrative.fr/recherche/api` | no | |
 | `user_agent` | string | as above | no | |

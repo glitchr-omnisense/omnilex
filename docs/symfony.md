@@ -54,12 +54,8 @@ The whole tree, from `OmnilexBundle::configure()`:
 The options are not validated when the container compiles but when the source is built: a
 credential left empty shows only then, as an `InvalidConfigException`. Use
 `'%env(default::PISTE_CLIENT_ID)%'` so that the variable may be absent: the site still boots,
-and `Registry::usable()` leaves the source out.
-
-> [!WARNING]
-> Known defect: the factories cast `sandbox`, `content` and `resolve_references` with PHP's
-> `(bool)`, so the string `'false'` reads as true. Give them as `'%env(bool:PISTE_SANDBOX)%'`,
-> never as a plain `%env()%` that may hold `false`.
+and `Registry::usable()` leaves the source out. A boolean option may be a plain `%env()%`: `"false"`
+and `"0"` read as false ([Configuration](configuration.md)).
 
 ## Services
 

@@ -91,20 +91,9 @@ foreach ($registry->reading($id->scheme) as $name => $source) {
 ```
 
 `having()`, `reading()` and `usable()` build the sources and leave out those whose options are
-incomplete (`InvalidConfigException`); `get()` and `all()` throw it.
-
-> [!WARNING]
-> Known defect: a source refused for another reason - EUR-Lex's `language` that is not an official
-> language of the Union, Judilibre's or the administrative courts' `recent` other than their two
-> values - is a PHP `InvalidArgumentException`, not an `InvalidConfigException`: `usable()`,
-> `having()` and `reading()` throw it instead of leaving the source out (seen with
-> `language: xx` on 2026-10-26).
-
-> [!WARNING]
-> Known defect: EUR-Lex searches `title` when a query sets both `title` and `text`, and drops
-> `text` without a word, where a criterion the source cannot apply is expected to be refused (seen
-> on 2026-10-26: text "pêche", title "protection des données": the request held the title's words
-> only). Set one or the other.
+incomplete or refused (`InvalidConfigException`: EUR-Lex's `language` that is not an official
+language of the Union, Judilibre's or the administrative courts' `recent` other than their two
+values); `get()` and `all()` throw it.
 
 ## Writing a source
 
