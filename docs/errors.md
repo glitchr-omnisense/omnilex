@@ -83,9 +83,8 @@ that meets one tries again later rather than record "nothing new".
   CELEX number.`), `Identifier::legifrance()`, `Query`'s dates (`"x" is not a date.`), EUR-Lex's
   search text without a word (`The search text holds no word.`) or a code of an authority table
   that is not one (`types`, `subjects`, `jurisdictions` with other characters than letters, digits,
-  `_`, `.`, `-`), and - a known defect, [Sources and search](sources.md#choosing-a-source-at-run-time)
-  - EUR-Lex's `language`, Judilibre's and the administrative courts' `recent` when the source is
-  built.
+  `_`, `.`, `-`). EUR-Lex's `language`, Judilibre's and the administrative courts' `recent` given
+  wrong are an `InvalidConfigException` when the source is built, as every misconfiguration.
 - `ValueError`: `Identifier::of()` with a scheme name that is not a `Scheme`.
 - `TypeError`: in Symfony, a source injected under an interface it does not implement
   ([Symfony](symfony.md#services)).
