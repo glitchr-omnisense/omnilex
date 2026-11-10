@@ -53,6 +53,9 @@ Set by `SourceFactory::createConfig()` under each provider's own defaults:
 |---|---|---|---|
 | `user_agent` | string | `omnilex/1.x (+https://github.com/glitchr-omnisense/omnilex)` | the `User-Agent` of every call |
 | `throttle` | float | each provider's (below); `0.0` for a provider that sets none | seconds left between two calls of the source |
+| `max_wait` | float | `10.0` | seconds a request may wait for a limit of the source's usage policy (or a wait the service asked for); a longer wait refuses it, `RateLimitedException` with `wasSent()` false ([Usage policies](policies.md)) |
+| `policy` | map | none | the site's tightening of the source's usage policy, in omnisense/contracts' schema (`rateLimits`, `concurrency`, `rights`, `requirements`); never looser |
+| `usage` | map | none | what the site is: `commercial`, `open_source`, `contract`; a use the source's terms forbid fails at the first request |
 | `base_uri` | string | each provider's | the service's address, to point at a copy or a proxy |
 
 A factory's constructor takes the HTTP client and the token store:

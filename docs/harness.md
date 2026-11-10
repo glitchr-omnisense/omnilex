@@ -81,3 +81,13 @@ Classes of a framework (DependencyInjection, Config, HttpKernel, HttpFoundation,
 The image is `php:8.4-cli-alpine` with Composer; the harness's packages live in the `harness`
 volume of the `omnilex-harness` project. The sources are cloned from GitHub as plain git
 repositories over HTTPS: no GitHub API (anonymous calls are rate limited), no ssh in the image.
+
+## omnisense/contracts and PHPStan
+
+The kernel the family builds on, omnisense/contracts, comes from GitHub (branch 1.x) unless
+`OMNISENSE_CONTRACTS` in `docker/.env` names its checkout (`../../../omnisense-contracts` beside
+the family's folder): then that checkout runs, and its tests with the family's.
+`docker compose run --rm omnilex phpstan` runs PHPStan at level max on each package that has a
+`phpstan.neon`; each `phpstan-baseline.neon` holds what was there when PHPStan came in
+(2026-11-10), and may only shrink. The service runs on Docker's default bridge (no network of its
+own); its image may be another harness tagged (PHP 8.4 with zip, intl and Composer).

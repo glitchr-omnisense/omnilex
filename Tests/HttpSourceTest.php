@@ -118,7 +118,17 @@ final class HttpSourceTest extends TestCase
             $source->text('x');
             self::fail();
         } catch (RateLimitedException $e) {
+            // Since omnisense/contracts: the 429 holds the next requests for its Retry-After, longer than max_wait: not sent.
+            self::assertFalse($e->wasSent());
+            self::assertGreaterThanOrEqual(29, $e->retryAfter);
+        }
+        $source = new StubSource('stub', new MockHttpClient([new MockResponse('', ['http_code' => 429])]));
+        try {
+            $source->text('x');
+            self::fail();
+        } catch (RateLimitedException $e) {
             self::assertNull($e->retryAfter);
+            self::assertTrue($e->wasSent());
         }
     }
 

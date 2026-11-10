@@ -87,6 +87,7 @@ the domain `shs.droit`); public registers (companies, VAT numbers) with `omnisen
 - [Authentication: PISTE and OAuth client credentials](docs/authentication.md)
 - [Configuration reference](docs/configuration.md)
 - [Errors](docs/errors.md)
+- [Usage policies: each source\'s limits, licence and credit](docs/policies.md)
 - [Testing](docs/testing.md)
 - [The Docker harness](docs/harness.md)
 - [Writing a provider](docs/providers.md)

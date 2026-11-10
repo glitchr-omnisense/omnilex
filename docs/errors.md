@@ -24,7 +24,9 @@ exception implementing `Omnilex\Exception\OmnilexException` (an interface extend
 |---|---|
 | `source` | the source's name (`piste` or the source's for the token server) |
 | `status` | the HTTP status, when there was one |
-| `retryAfter` | `RateLimitedException` only: the seconds of `Retry-After`, when numeric |
+| `retryAfter` | `RateLimitedException` only: the seconds to wait (a 429's `Retry-After`, in seconds or as a date; the end of a limit's window) |
+| `limit` | `RateLimitedException` only: the limit of the source's usage policy that refused the request, when one did |
+| `wasSent()` | `RateLimitedException` only: false when the request was not sent ([Usage policies](policies.md): a limit reached, the service's wait not over) |
 | `getMessage()` | `[<source>] <message>`: `the service answered 503: <the body's first 300 characters, tags stripped>`, `unreachable: <transport error>`, `the service refuses the credentials (401): <challenge or body>`, `rate limited, retry in 30 s`, `the client id or secret is refused: <error_description>` |
 | `getPrevious()` | the HTTP client's exception, for a transport error |
 

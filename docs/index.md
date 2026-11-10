@@ -67,6 +67,7 @@ What each reads, filters and allows: [Sources and search](sources.md).
   [the law at a date](versions.md) (versions), [authentication](authentication.md) (PISTE).
 - [Configuration reference](configuration.md): the registry, every option of every factory.
 - [Errors](errors.md): the exceptions, the HTTP statuses behind them, what to catch.
+- [Usage policies](policies.md): each source\'s limits, licence and credit, as data; wait or refuse.
 - [Testing](testing.md): testing code that uses the family, the family's own tests.
 - [The Docker harness](harness.md): the console, bare PHP, the tests.
 - [Writing a provider](providers.md).
