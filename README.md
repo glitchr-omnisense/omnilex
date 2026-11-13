@@ -100,6 +100,8 @@ composer require omnisense/omnilex omnilex/eurlex omnilex/justice-administrative
 ```
 
 ```php
+require __DIR__.'/vendor/autoload.php';
+
 use Omnilex\Eurlex\EurlexSourceFactory;
 use Omnilex\JusticeAdministrative\JusticeAdministrativeSourceFactory;
 use Omnilex\Registry;
@@ -112,9 +114,14 @@ $registry = new Registry([new EurlexSourceFactory($http), new JusticeAdministrat
 ]);
 $eurlex = $registry->articles('eurlex');           // typed: an ArticleReaderInterface
 $administratif = $registry->recent('administratif');
+
+// Article 17 of the GDPR as in force on 1 June 2018
+echo $eurlex->article('32016R0679', '17', new DateTimeImmutable('2018-06-01'))->title, "\n";   // Droit à l'effacement («droit à l'oubli»)
 ```
 
-No bundle, no container: a factory per source package, the registry built by hand.
+No account and no key: EUR-Lex and the administrative justice's open data are open. Légifrance
+and Judilibre need a PISTE account (free, OAuth client credentials). No bundle, no container: a
+factory per source package, the registry built by hand.
 [docs/installation.md](docs/installation.md) opens on a whole script that runs as it is, against
 the real service.
 

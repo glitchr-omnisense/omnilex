@@ -7,12 +7,6 @@ parameters:
 			path: Auth/ClientCredentials.php
 
 		-
-			message: '#^Call to function is_subclass_of\(\) with ''Omnilex\\\\Eurlex\\\\EurlexSourceFactory''\|''Omnilex\\\\Judilibre\\\\JudilibreSourceFactory''\|''Omnilex\\\\JusticeAdministrative\\\\JusticeAdministrativeSourceFactory''\|''Omnilex\\\\Legifrance\\\\LegifranceSourceFactory'' and ''Omnilex\\\\Source\\\\SourceFactoryInterface'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: Bridge/Symfony/OmnilexBundle.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 1

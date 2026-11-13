@@ -2,6 +2,7 @@
 
 namespace Omnilex\Tests\Bridge;
 
+use Composer\InstalledVersions;
 use Omnilex\Auth\TokenStoreInterface;
 use Omnilex\Bridge\Symfony\CacheTokenStore;
 use Omnilex\Bridge\Symfony\OmnilexBundle;
@@ -46,8 +47,11 @@ final class OmnilexBundleTest extends TestCase
 
         $registry = $container->get(Registry::class);
         self::assertSame(['codes', 'jurisprudence'], $registry->names());
+        // The source packages are optional: those installed beside this one (all of them in the harness).
         foreach (['legifrance', 'judilibre', 'eurlex', 'justice-administrative'] as $factory) {
-            self::assertContains($factory, $registry->factories(), 'the packages installed are registered');
+            if (InstalledVersions::isInstalled('omnilex/'.$factory)) {
+                self::assertContains($factory, $registry->factories(), 'the packages installed are registered');
+            }
         }
         self::assertContains('stub', $registry->factories(), 'the application\'s own, autoconfigured');
 
